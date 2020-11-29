@@ -89,10 +89,11 @@ def KMeans(K, N, d, MAX_ITER, observations):
     while iteration_cnt <= MAX_ITER and not identical_centroids:
 
         #test wether previous and current clusters's centroids are identical
-        identical_centroids = True
+
         if iteration_cnt >= 1:
+            identical_centroids = True
             for i in range(k):
-                if ec_d(old_clusters[i].centroid, clusters[i].centroid) != 0:
+                if ec_d(old_clusters[i].centroid, clusters[i].centroid) < 0.5:
                     identical_centroids = False
                     break
 
@@ -113,16 +114,19 @@ def KMeans(K, N, d, MAX_ITER, observations):
 
             temporal_division[closest_cluster].append(ob)
 
-        #update new clusters's centroids according to current iteration's devision,
-        #and keep old clusters's centroids
 
-        old_clusters = [x for x in clusters]
 
+
+        # creates a copy of clusters into old_clusters
+        old_clusters = [Cluster() for i in range (k)]
+        for i in range(k):
+            old_clusters[i].centroid = clusters[i].centroid
+
+        #print(iteration_cnt, "'th iteration's cluster: ", clusters)
+
+        # update new clusters's centroids according to current iteration's devision
         for i in range (len(temporal_division)):
-            if len(temporal_division[i]) > 0:
-                clusters[i].centroid = calc_centroid(temporal_division[i])
-
-    #print final clusters's centroids
+            clusters[i].centroid = calc_centroid(temporal_division[i])
     for cluster in clusters:
         cen = ""
         for num in cluster.centroid:
@@ -134,7 +138,4 @@ def KMeans(K, N, d, MAX_ITER, observations):
 KMeans(k,n,d, MAX_ITER, observations)
 
 exit(0)
-
-
-
 
