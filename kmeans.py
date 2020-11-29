@@ -88,7 +88,7 @@ def KMeans(K, N, d, MAX_ITER, observations):
 
     while iteration_cnt <= MAX_ITER and not identical_centroids:
 
-        #test wether previous and current centroids are identical
+        #test wether previous and current clusters's centroids are identical
         identical_centroids = True
         if iteration_cnt >= 1:
             for i in range(k):
@@ -100,14 +100,14 @@ def KMeans(K, N, d, MAX_ITER, observations):
 
         temporal_division = [[] for i in range(k)]
 
-        #deviding observations among clusters
+        #deviding observations among clusters according to their distance from the cluster's cenroid (calculated in prev iteration)
         for ob in observations:
-            minimal_distance = ec_d(ob, clusters[0].centroid)
+            min_distance = ec_d(ob, clusters[0].centroid)
             closest_cluster = 0
             for i in range(k):
                 current_distance = ec_d(ob, clusters[i].centroid)
-                if current_distance < minimal_distance:
-                    minimal_distance = current_distance
+                if current_distance < min_distance:
+                    min_distance = current_distance
                     closest_cluster = i
 
 
